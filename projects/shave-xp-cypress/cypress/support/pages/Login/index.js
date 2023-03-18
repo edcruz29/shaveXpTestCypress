@@ -1,28 +1,48 @@
+class LoginPage {
 
-class LoginPage{
-  
-    go(){
+    constructor() {
+        this.alertError = '.alert-error'
+    }
+
+    submit(email = null, password = null) {
         cy.visit('/')
+
+        cy.get('input[placeholder$=email]').as('email')
+        cy.get('input[placeholder*=senha]').as('password')
+
+        if (email) {
+            cy.get('@email').type(email)
+        }
+
+        if (password) {
+            cy.get('@password').type(password)
+        }
+
+        cy.contains('button', 'Entrar')
+            .click()
     }
-    form(email,password){
-        if(email) cy.get('input[placeholder="Seu email"]').type(email)
-        if(password) cy.get('input[type="password"]').type(password)
-       
+
+    noticeShouldBe(message) {
+        cy.get('.notice-container')
+            .should('be.visible')
+            .find('.error p')
+            .should('have.text', message)
     }
-    submit(){
-        cy.contains('button', 'Entrar').click()
+
+    alertShouldBe(message) {
+        cy.get(this.alertError)
+            .should('be.visible')
+            .should('have.text', message)
     }
-    errorMessage(){
-        cy.get('.notice-container').should('be.visible').find('.error p').should('have.text', `Ocorreu um erro ao fazer login, verifique suas credenciais.`)
+
+    requiredFields(emailMessage, passwordMessage) {
+        cy.get(this.alertError)
+            .should('have.length', 2)
+            .and(($small) => {
+                expect($small.get(0).textContent).to.equal(emailMessage)
+                expect($small.get(1).textContent).to.equal(passwordMessage)
+            })
     }
-    checkLoggedUser(user){
-        cy.get('a[href="/shavers"]').should('have.text', `Olá, ${user.nome}`)
-    }
-    alert(text, length){
-        cy.get('.alert-error').should('have.length', length).and(($small)=>{
-            if(text.email)expect($small.get(0).textContent).to.equal(`${text.email}`)
-            if(text.senha)expect($small.get(1).textContent).to.equal(`${text.senha}`)
-        })
-    }
+
 }
 export default new LoginPage()

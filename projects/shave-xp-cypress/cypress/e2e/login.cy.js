@@ -1,116 +1,88 @@
-import loginPage from '../support/pages/Login'
-import shaverPage from '../support/pages/Shavers'
-
-describe('login', ()=>{
+import loginPage from '../support/pages/login'
+import shaversPage from '../support/pages/shavers'
 
 
-    context('quando submeto o formulário', ()=>{
-        
+describe('login', () => {
 
-        it('deve logar com sucesso', ()=>{
-
-                const email='galvaocruz16@gmail.com'
-                const password='cDz#2020'
-            
-        
-
-            loginPage.go()
-            loginPage.form(email,password)
-            loginPage.submit()
-            shaverPage.header.checkLoggedUser(user)
-
-        }),
-        it('Não deve logar com senha incorreta', ()=>{
-
+    context('quando submeto o formulário', () => {
+        it('deve logar com sucesso', () => {
             const user = {
-                email:'galvaocruz16@gmail.com',
-                password:'cDz@2020',
-                nome:'Eduardo'
+                name: 'Eduardo',
+                email: 'galvaocruz16@gmail.com',
+                password: 'cDz#2020'
             }
 
-            loginPage.go()
-            loginPage.form(email,password)
-            loginPage.submit()
-            loginPage.errorMessage()
+            loginPage.submit(user.email, user.password)
+            shaversPage.header.userShouldBeLoggedIn(user.name)
+        })
 
-        }),
-        it('Não deve logar com email não cadastrado', ()=>{
-
+        it('não deve logar com senha incorreta', () => {
             const user = {
-                email:'maminha@ymail.com',
-                password:'123456',
-                nome:'Eduardo'
+                name: 'Eduardo',
+                email: 'galvaocruz16@gmail.com',
+                password: 'cDz#2022'
             }
 
-            loginPage.go()
-            loginPage.form(user)
-            loginPage.submit()
-            loginPage.errorMessage()
+            loginPage.submit(user.email, user.password)
 
-        }),
-        it('Não deve logar com email invalido', ()=>{
-
-            const user = {
-                email:'galvaocruz16',
-                password:'cDz#2020',
-                nome:'Eduardo'
-            }
-            const text ={
-                email:'Informe um email válido',
-            
-            }
-            const length = 1
-
-            loginPage.go()
-            loginPage.form(user)
-            loginPage.submit()
-            loginPage.alert(text,length)
-           
-
-        }),
-        it('campos obrigatórios', ()=>{
-
-            const user = {
-    
-                nome:'Eduardo'
-            }
-            const text ={
-                email:'E-mail é obrigatório',
-                senha:'Senha é obrigatória'
-            }
-            const length = 2
-
-            loginPage.go()
-            loginPage.form(user)
-            loginPage.submit()
-            loginPage.alert(text,length)
+            const message = 'Ocorreu um erro ao fazer login, verifique suas credenciais.'
+            loginPage.noticeShouldBe(message)
 
         })
 
+        it('não deve logar com email não cadastrado', () => {
+            const user = {
+                name: 'Eduardo',
+                email: 'galvaocruz16@naoexiste.com',
+                password: '123456'
+            }
+
+            loginPage.submit(user.email, user.password)
+
+            const message = 'Ocorreu um erro ao fazer login, verifique suas credenciais.'
+            loginPage.noticeShouldBe(message)
+        })
+
+        it('campos obrigatórios', () => {
+            loginPage.submit()
+            loginPage.requiredFields('E-mail é obrigatório', 'Senha é obrigatória')
+        })
     })
-    context.only('senha muito curta',()=>{
-    
-        const  passwords = [ 'c',
-            'cD',
-            'cDz',
-            'cDz#',
-            'cDz#2']
 
-        passwords.forEach((p)=>{
-            it('não deve logar com a senha '+ p,()=>{
+    context('senha muito curta', () => {
+        const passwords = [
+            '1',
+            '12',
+            '123',
+            '1234',
+            '12345'
+        ]
 
-                loginPage.go()
-                loginPage.form('galvaocruz16@gmail.com', p)
-                loginPage.submit()
-                
-
-                cy.get('.alert-error')
-                .should('be.visible')
-                .should('have.text','Pelo menos 6 caracteres')
+        passwords.forEach((p) => {
+            it(`não deve logar com a senha: ${p}`, () => {
+                loginPage.submit('papito@teste.com.br', p)
+                loginPage.alertShouldBe('Pelo menos 6 caracteres')
             })
+        })
+    })
 
-           
+    context('email no formato incorreto', () => {
+        const emails = [
+            'galvaocruz16&gmail.com',
+            'galvaocruz16.com.br',
+            '@gmail.com',
+            '@',
+            'galvaocruz16@',
+            '121323',
+            '@#@!#!@',
+            'xpto123'
+        ]
 
+        emails.forEach((e) => {
+            it(`não deve logar com o email: ${e}`, () => {
+                loginPage.submit(e, 'pwd123')
+                loginPage.alertShouldBe('Informe um email válido')
+            })
         })
     })
 })
