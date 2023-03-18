@@ -51,7 +51,7 @@ $ git clone https://github.com/edcruz29/shaveXpTestCypress.git
 *_3º Passo - Após start o Frontend irá carregar a página do Shave-XP_* <br/>
   ![image](https://user-images.githubusercontent.com/68963421/226124252-6feed30f-119e-476a-86fb-c1744decd8c5.png)<br/>
 
-*_4º Passo - Após o start da Aplicação Qtruck executar os testes em Cypress_* <br/>
+*_4º Passo - Após o start da Aplicação Shave-XP executar os testes em Cypress_* <br/>
   4.1. No mesmo terminal que baixou as dependencias de Test <br/>
      Na pasta projects/shave-xp-cypress, informe o comando <br/>
      ```
