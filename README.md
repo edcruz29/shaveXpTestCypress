@@ -1,4 +1,4 @@
-# Projeto de automação de QAXperience Bootcamp [Avançado em Cypress]
+# Projeto de automação de QAXperience Bootcamp
 
 Esse projeto é a criação da automação em cypress.<br/>
 Usando a Aplicação Shave-Xp desenvolvida para o curso. </br>
