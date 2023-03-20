@@ -20,7 +20,7 @@ $ git clone https://github.com/edcruz29/shaveXpTestCypress.git
 
 ### Informações baixar as dependencias do Projeto e executa-lo
 
-*_1º Passo - Baixar as dependencias da Aplicação Qtruck_* <br/>
+*_1º Passo - Baixar as dependencias da Aplicação Shave-XP_* <br/>
   1.1. Em um terminal baixar as dependencias de backend <br/>
      Na pasta de backend no terminal, informe o comando <br/>
      ```
