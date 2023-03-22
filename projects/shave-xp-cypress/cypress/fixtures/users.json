@@ -1,0 +1,23 @@
+{
+    "success":{
+    "name":"Eduardo",
+    "email":"galvaocruz16@gmail.com",
+    "password":"cDz#2020"
+
+    },
+    "invpass":{
+
+        "name":"Eduardo",
+        "email":"galvaocruz16@gmail.com",
+        "password":"cDz#2021"
+
+    },
+    "emailinvalid":{
+
+        "name":"Eduardo",
+        "email":"galvaocruz16@400.com",
+        "password":"cDz#20212020"
+
+    }
+    
+}

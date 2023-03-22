@@ -1,28 +1,26 @@
 import loginPage from '../support/pages/login'
 import shaversPage from '../support/pages/shavers'
+import data from '../fixtures/users.json'
+
 
 
 describe('login', () => {
 
-    context('quando submeto o formulário', () => {
-        it('deve logar com sucesso', () => {
-            const user = {
-                name: 'Eduardo',
-                email: 'galvaocruz16@gmail.com',
-                password: 'cDz#2020'
-            }
 
+
+    context('quando submeto o formulário', () => {
+        it.only('deve logar com sucesso', () => {
+            const user = data.success 
+
+            cy.createUser(user)
+          
             loginPage.submit(user.email, user.password)
             shaversPage.header.userShouldBeLoggedIn(user.name)
         })
 
         it('não deve logar com senha incorreta', () => {
-            const user = {
-                name: 'Eduardo',
-                email: 'galvaocruz16@gmail.com',
-                password: 'cDz#2022'
-            }
-
+            const user = data.invpass 
+          
             loginPage.submit(user.email, user.password)
 
             const message = 'Ocorreu um erro ao fazer login, verifique suas credenciais.'
@@ -31,12 +29,8 @@ describe('login', () => {
         })
 
         it('não deve logar com email não cadastrado', () => {
-            const user = {
-                name: 'Eduardo',
-                email: 'galvaocruz16@naoexiste.com',
-                password: '123456'
-            }
-
+            const user = data.emailinvalid 
+          
             loginPage.submit(user.email, user.password)
 
             const message = 'Ocorreu um erro ao fazer login, verifique suas credenciais.'

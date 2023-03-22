@@ -1,17 +1,19 @@
 import RegisterPage from '../support/pages/Register'
+import data from '../fixtures/users.json'
 describe('login', ()=>{
 
 
     context('Crair um novo usuário', ()=>{
         
 
-        it('deve criar o usuário com sucesso', ()=>{
+        it.only('deve criar o usuário com sucesso', ()=>{
 
-            const user = {
-                email:'galvaocruz16@maca.com',
-                password:'123456',
-                name:'Eduardo Galvão'
-            }
+            const user = data.success 
+
+            cy.task('removeUser', user.email).then(function(result){
+                cy.log(result)
+            })
+
             const text = 'Boas vindas, faça login para solicitar serviços!'
             RegisterPage.go()
             RegisterPage.form(user.email,user.password,user.name)
@@ -89,7 +91,7 @@ describe('login', ()=>{
             })
         })
     })
-    context.only('E-mail fora do padrão',()=>{
+    context('E-mail fora do padrão',()=>{
 
         const user = {
             password:'cDz#2020',
