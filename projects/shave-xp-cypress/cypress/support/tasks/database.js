@@ -8,8 +8,7 @@ const dbConfig = {
   port:5432
 }
 
-
-export function removeUser(email){
+  module.exports = {removeUser(email){
     const pool = new Pool(dbConfig)
     return new Promise(function(resolve){
       pool.query('DELETE from users where email = $1',[email],function(error, result){
@@ -23,3 +22,4 @@ export function removeUser(email){
 
     })
   }
+}

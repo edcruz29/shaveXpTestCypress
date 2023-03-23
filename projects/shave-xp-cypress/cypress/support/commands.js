@@ -25,6 +25,7 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 
+
 Cypress.Commands.add('createUser', (user)=>{
     cy.task('removeUser', user.email).then(function(result){
         cy.log(result)
