@@ -2,21 +2,24 @@
     "success":{
     "name":"Eduardo",
     "email":"galvaocruz16@gmail.com",
-    "password":"cDz#2020"
+    "password":"cDz#2020",
+    "is_shaver":false
 
     },
     "invpass":{
 
         "name":"Eduardo",
         "email":"galvaocruz16@gmail.com",
-        "password":"cDz#2021"
+        "password":"cDz#2021",
+        "is_shaver":false
 
     },
     "emailinvalid":{
 
         "name":"Eduardo",
         "email":"galvaocruz16@400.com",
-        "password":"cDz#20212020"
+        "password":"cDz#20212020",
+        "is_shaver":false
 
     }
     
