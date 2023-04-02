@@ -3,10 +3,10 @@ import data from '../fixtures/users.json'
 describe('login', ()=>{
 
 
-    context('Crair um novo usuário', ()=>{
+    context('Criar um novo usuário', ()=>{
         
 
-        it.only('deve criar o usuário com sucesso', ()=>{
+        it('deve criar o usuário com sucesso', ()=>{
 
             const user = data.success 
 

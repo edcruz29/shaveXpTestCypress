@@ -22,11 +22,11 @@ class LoginPage {
             .click()
     }
 
-    noticeShouldBe(message) {
+    noticeShouldBe() {
         cy.get('.notice-container')
             .should('be.visible')
             .find('.error p')
-            .should('have.text', message)
+            .should('have.text', 'Agora você já pode logar com a sua nova senha secreta.')
     }
 
     alertShouldBe(message) {
