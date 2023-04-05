@@ -23,7 +23,8 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
+import LoginPage from '../support/pages/Login'
+import ShaversPage from "../support/pages/Shavers"
 
 
 Cypress.Commands.add('createUser', (user)=>{
@@ -65,4 +66,24 @@ Cypress.Commands.add('resetPassword',(email)=>{
         cy.log(result.body.token)
         Cypress.env('passToken',result.body.token)
     })
+})
+Cypress.Commands.add('uiLogin',(user)=>{
+            LoginPage.submit(user.email, user.password)
+            ShaversPage.header.userShouldBeLoggedIn(user.name)
+})
+
+Cypress.Commands.add('apiLogin', (user) => {
+    cy.request({
+        method: 'POST',
+        url: 'http://localhost:3333/sessions/',
+        body: { email: user.email, password: user.password }
+    }).then(response => {
+        expect(response.status).to.eql(200)
+
+        const {user, token} = response.body
+
+        window.localStorage.setItem('@ShaveXP:token', token)
+        window.localStorage.setItem('@ShaveXP:user', JSON.stringify(user))
+    })
+    cy.visit('/')
 })
