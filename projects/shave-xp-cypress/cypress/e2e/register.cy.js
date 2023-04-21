@@ -1,4 +1,3 @@
-import RegisterPage from '../support/pages/views/Register'
 import data from '../fixtures/register.json'
 describe('Register', ()=>{
 
@@ -16,8 +15,8 @@ describe('Register', ()=>{
 
             const message = 'Boas vindas, faça login para solicitar serviços!'
             
-            RegisterPage.submit(user.name,user.email,user.password)
-            RegisterPage.shared.noticeSucessShouldBe(message)
+            cy.submitRegister(user.name,user.email,user.password)
+            cy.noticeSuccessShouldBe(message)
 
         }),
         it('Não pode cadastrar usuário duplicado', ()=>{
@@ -25,18 +24,20 @@ describe('Register', ()=>{
             const user = data.sameEmail
             const message= 'Oops! E-mail já cadastrado.'
 
-            RegisterPage.submit(user.name,user.email,user.password)
-            RegisterPage.shared.noticeErrorShouldBe(message)
+            cy.submitRegister(user.name,user.email,user.password)
+            cy.noticeErrorShouldBe(message)
 
         }),
         it('Validação dos campos obrigatórios', ()=>{
 
-        
-            const nomeMessage = 'Nome é obrigatório'
-            const emailMessage = 'E-mail é obrigatório'
-            const passwordMessage = 'Senha é obrigatória'
-            RegisterPage.submit()
-            RegisterPage.requiredFields(nomeMessage,emailMessage,passwordMessage)
+           cy.submitRegister()
+           cy.get('.alert-error')
+                .should('have.length', 3)
+                .and(($small) => {
+                    expect($small.get(0).textContent).to.equal('Nome é obrigatório')
+                    expect($small.get(1).textContent).to.equal('E-mail é obrigatório')
+                    expect($small.get(2).textContent).to.equal('Senha é obrigatória')
+                })
 
         })
 
@@ -53,8 +54,8 @@ describe('Register', ()=>{
        
         passwords.forEach((p) => {
             it(`não deve criar com a senha: ${p}`, () => {
-                RegisterPage.submit(user.nome,user.email,p)
-                RegisterPage.shared.alertShouldBe(text)
+                cy.submitRegister(user.nome,user.email,p)
+                cy.alertShouldBe(text)
             })
         })
     })
@@ -70,8 +71,8 @@ describe('Register', ()=>{
 
         emails.forEach((e) => {
             it(`não deve criar com o email: ${e}`, () => {
-                RegisterPage.submit(user.nome,e,user.password)
-                RegisterPage.shared.alertShouldBe(text)
+                cy.submitRegister(user.nome,e,user.password)
+                cy.alertShouldBe(text)
             })
         })
 

@@ -1,8 +1,4 @@
-import loginPage from '../support/pages/views/Login'
-import shaversPage from '../support/pages/views/Shavers'
 import data from '../fixtures/users.json'
-
-
 
 describe('login', () => {
 
@@ -12,33 +8,34 @@ describe('login', () => {
 
             cy.createUser(user)
           
-            loginPage.submit(user.email, user.password)
-            // cy.submitLogin(user.email,user.password)
-            shaversPage.header.userShouldBeLoggedIn(user.name)
+            cy.submitLogin(user.email,user.password)
+            cy.userShouldBeLoggedIn(user.name)
         })
 
         it('não deve logar com senha incorreta', () => {
             const user = data.invpass 
-          
-            loginPage.submit(user.email, user.password)
-
             const message = 'Ocorreu um erro ao fazer login, verifique suas credenciais.'
-            loginPage.shared.noticeErrorShouldBe(message)
+
+            cy.submitLogin(user.email,user.password)
+            cy.noticeErrorShouldBe(message)
 
         })
 
         it('não deve logar com email não cadastrado', () => {
             const user = data.emailinvalid 
-          
-            loginPage.submit(user.email, user.password)
-
             const message = 'Ocorreu um erro ao fazer login, verifique suas credenciais.'
-            loginPage.shared.noticeErrorShouldBe(message)
+            cy.submitLogin(user.email, user.password)
+            cy.noticeErrorShouldBe(message)
         })
 
         it('campos obrigatórios', () => {
-            loginPage.submit()
-            loginPage.requiredFields('E-mail é obrigatório', 'Senha é obrigatória')
+            cy.submitLogin()
+            cy.get('.alert-error')
+            .should('have.length', 2)
+            .and(($small) => {
+                expect($small.get(0).textContent).to.equal('E-mail é obrigatório')
+                expect($small.get(1).textContent).to.equal('Senha é obrigatória')
+            })
         })
     })
 
@@ -53,8 +50,10 @@ describe('login', () => {
 
         passwords.forEach((p) => {
             it(`não deve logar com a senha: ${p}`, () => {
-                loginPage.submit('papito@teste.com.br', p)
-                loginPage.shared.alertShouldBe('Pelo menos 6 caracteres')
+                
+
+                cy.submitLogin('eduardo@teste.com.br', p)
+                cy.alertShouldBe('Pelo menos 6 caracteres')
             })
         })
     })
@@ -73,8 +72,8 @@ describe('login', () => {
 
         emails.forEach((e) => {
             it(`não deve logar com o email: ${e}`, () => {
-                loginPage.submit(e, 'pwd123')
-                loginPage.shared.alertShouldBe('Informe um email válido')
+                cy.submitLogin(e, 'pwd123')
+                cy.alertShouldBe('Informe um email válido')
             })
         })
     })
