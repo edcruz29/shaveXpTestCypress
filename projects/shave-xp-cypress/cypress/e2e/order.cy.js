@@ -1,7 +1,7 @@
 import  data  from "../fixtures/order.json"
-import ShaversPage from "../support/pages/Shavers"
-import CatalogPage from "../support/pages/Catalog"
-import OrderPage from '../support/pages/Order'
+import ShaversPage from "../support/pages/views/Shavers"
+import CatalogPage from "../support/pages/views/Catalog"
+import OrderPage from '../support/pages/views/Order'
 
 
 describe('pedido',()=>{

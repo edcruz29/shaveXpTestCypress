@@ -1,12 +1,12 @@
-import RegisterPage from '../support/pages/Register'
+import RegisterPage from '../support/pages/views/Register'
 import data from '../fixtures/register.json'
-describe('login', ()=>{
+describe('Register', ()=>{
 
 
-    context('Criar um novo usuário', ()=>{
+    context('Cadastrar um novo usuário', ()=>{
         
 
-        it('deve criar o usuário com sucesso', ()=>{
+        it('deve cadastrar o usuário com sucesso', ()=>{
 
             const user = data.success 
 
@@ -14,22 +14,22 @@ describe('login', ()=>{
                 cy.log(result)
             })
 
-            const text = 'Boas vindas, faça login para solicitar serviços!'
+            const message = 'Boas vindas, faça login para solicitar serviços!'
             
             RegisterPage.submit(user.name,user.email,user.password)
-            RegisterPage.noticeShouldBe(text)
+            RegisterPage.shared.noticeSucessShouldBe(message)
 
         }),
-        it('Usuário não pode ser duplicado', ()=>{
+        it('Não pode cadastrar usuário duplicado', ()=>{
 
             const user = data.sameEmail
-            const text= 'Oops! E-mail já cadastrado.'
+            const message= 'Oops! E-mail já cadastrado.'
 
             RegisterPage.submit(user.name,user.email,user.password)
-            RegisterPage.noticeShouldBe(text)
+            RegisterPage.shared.noticeErrorShouldBe(message)
 
         }),
-        it('campos obrigatórios', ()=>{
+        it('Validação dos campos obrigatórios', ()=>{
 
         
             const nomeMessage = 'Nome é obrigatório'
@@ -41,7 +41,7 @@ describe('login', ()=>{
         })
 
     })
-    context('Senha muito curta', ()=>{
+    context('Não deve cadastrar usuário com a Senha muito curta', ()=>{
 
         const user = {
             email:'galvaocruz16@jmail.com',
@@ -54,11 +54,11 @@ describe('login', ()=>{
         passwords.forEach((p) => {
             it(`não deve criar com a senha: ${p}`, () => {
                 RegisterPage.submit(user.nome,user.email,p)
-                RegisterPage.alertShouldBe(text)
+                RegisterPage.shared.alertShouldBe(text)
             })
         })
     })
-    context('E-mail fora do padrão',()=>{
+    context('Não deve cadastrar um usuário com o E-mail fora do padrão',()=>{
 
         const user = {
             password:'cDz#2020',
@@ -71,7 +71,7 @@ describe('login', ()=>{
         emails.forEach((e) => {
             it(`não deve criar com o email: ${e}`, () => {
                 RegisterPage.submit(user.nome,e,user.password)
-                RegisterPage.alertShouldBe(text)
+                RegisterPage.shared.alertShouldBe(text)
             })
         })
 

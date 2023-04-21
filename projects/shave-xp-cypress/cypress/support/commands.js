@@ -28,15 +28,6 @@ import ShaversPage from "../support/pages/Shavers"
 
 
 Cypress.Commands.add('createUser', (user)=>{
-    
-
-    // cy.request({
-    //     method: 'DELETE',
-    //     url:'http://localhost:8000/user/' + user.email
-    // }).then(function(response){
-    //     expect(response.status).to.eq(204)
-    // })
-
     cy.log(JSON.stringify(user))
 
     cy.request({
@@ -45,6 +36,14 @@ Cypress.Commands.add('createUser', (user)=>{
         body: user
     }).then(function(response){
         expect(response.status).to.eq(201)
+    })
+})
+Cypress.Commands.add('deleteUser', (user)=>{
+    cy.request({
+        method: 'DELETE',
+        url:'http://localhost:8000/user/' + user.email
+    }).then(function(response){
+        expect(response.status).to.eq(204)
     })
 })
 Cypress.Commands.add('forgotPassword',(email)=>{

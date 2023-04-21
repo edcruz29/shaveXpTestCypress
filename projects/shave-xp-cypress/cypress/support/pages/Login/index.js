@@ -1,7 +1,10 @@
+import shared from '../shared'
+
 class LoginPage {
 
     constructor() {
         this.alertError = '.alert-error'
+        this.shared = shared
     }
 
     submit(email = null, password = null) {
@@ -22,19 +25,6 @@ class LoginPage {
             .click()
     }
 
-    noticeShouldBe() {
-        cy.get('.notice-container')
-            .should('be.visible')
-            .find('.error p')
-            .should('have.text', 'Agora você já pode logar com a sua nova senha secreta.')
-    }
-
-    alertShouldBe(message) {
-        cy.get(this.alertError)
-            .should('be.visible')
-            .should('have.text', message)
-    }
-
     requiredFields(emailMessage, passwordMessage) {
         cy.get(this.alertError)
             .should('have.length', 2)
@@ -45,4 +35,5 @@ class LoginPage {
     }
 
 }
+
 export default new LoginPage()

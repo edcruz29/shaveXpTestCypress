@@ -1,7 +1,8 @@
-
+import shared from '../../shared'
 class RegisterPage{
+
     constructor() {
-        this.alertError = '.alert-error'
+        this.shared = shared
     }
     submit(nome=null, email = null, password = null) {
         cy.visit('/signup')
@@ -27,25 +28,13 @@ class RegisterPage{
     }
    
     requiredFields(nomeMessage, emailMessage, passwordMessage) {
-        cy.get(this.alertError)
+        cy.get('.alert-error')
             .should('have.length', 3)
             .and(($small) => {
                 expect($small.get(0).textContent).to.equal(nomeMessage)
                 expect($small.get(1).textContent).to.equal(emailMessage)
                 expect($small.get(2).textContent).to.equal(passwordMessage)
             })
-    }
-    noticeShouldBe(text) {
-        cy.get('.notice-container')
-            .should('be.visible')
-            .find('p')
-            .should('have.text', text)
-    }
-
-    alertShouldBe(message) {
-        cy.get(this.alertError)
-            .should('be.visible')
-            .should('have.text', message)
     }
 }
 export default new RegisterPage()

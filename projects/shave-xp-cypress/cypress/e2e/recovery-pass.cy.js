@@ -1,7 +1,7 @@
-import ForgotPassPage from '../support/pages/Forgot-pass'
-import RpPages from '../support/pages/Reset-pass'
-import LoginPage from '../support/pages/Login';
-import ShaversPage from '../support/pages/Shavers'
+import ForgotPassPage from '../support/pages/views/Forgot-pass'
+import RpPages from '../support/pages/views/Reset-pass'
+import LoginPage from '../support/pages/views/Login';
+import ShaversPage from '../support/pages/views/Shavers'
 
 describe('Esqueci minha senha', ()=>{
     
