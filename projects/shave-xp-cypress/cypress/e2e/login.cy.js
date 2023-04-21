@@ -1,5 +1,5 @@
-import loginPage from '../support/pages/Login'
-import shaversPage from '../support/pages/Shavers'
+import loginPage from '../support/pages/views/Login'
+import shaversPage from '../support/pages/views/Shavers'
 import data from '../fixtures/users.json'
 
 
@@ -13,6 +13,7 @@ describe('login', () => {
             cy.createUser(user)
           
             loginPage.submit(user.email, user.password)
+            // cy.submitLogin(user.email,user.password)
             shaversPage.header.userShouldBeLoggedIn(user.name)
         })
 
