@@ -1,5 +1,5 @@
 import RegisterPage from '../support/pages/Register'
-import data from '../fixtures/users.json'
+import data from '../fixtures/register.json'
 describe('login', ()=>{
 
 
@@ -15,25 +15,18 @@ describe('login', ()=>{
             })
 
             const text = 'Boas vindas, faça login para solicitar serviços!'
-            RegisterPage.go()
-            RegisterPage.form(user.email,user.password,user.name)
-            RegisterPage.submit()
-            RegisterPage.message(text)
+            
+            RegisterPage.submit(user.name,user.email,user.password)
+            RegisterPage.noticeShouldBe(text)
 
         }),
         it('Usuário não pode ser duplicado', ()=>{
 
-            const user = {
-                email:'galvaocruz16@email.com',
-                password:'cDz#2020',
-                name:'Eduardo'
-            }
+            const user = data.sameEmail
             const text= 'Oops! E-mail já cadastrado.'
 
-            RegisterPage.go()
-            RegisterPage.form(user.email,user.password,user.name)
-            RegisterPage.submit()
-            RegisterPage.message(text)
+            RegisterPage.submit(user.name,user.email,user.password)
+            RegisterPage.noticeShouldBe(text)
 
         }),
         it('campos obrigatórios', ()=>{
@@ -42,26 +35,8 @@ describe('login', ()=>{
             const nomeMessage = 'Nome é obrigatório'
             const emailMessage = 'E-mail é obrigatório'
             const passwordMessage = 'Senha é obrigatória'
-            RegisterPage.go()
-            RegisterPage.form()
             RegisterPage.submit()
             RegisterPage.requiredFields(nomeMessage,emailMessage,passwordMessage)
-
-        }),
-       
-        it('Senha maior ou igual a 6 caracteres', ()=>{
-
-            const user = {
-                email:'galvaocruz16@jmail.com',
-                password:'a',
-                name:'Eduardo Galvão'
-            }
-            const text = 'Pelo menos 6 caracteres'
-
-            RegisterPage.go()
-            RegisterPage.form(user.email,user.password,user.name)
-            RegisterPage.submit()
-            RegisterPage.alert(text)
 
         })
 
@@ -73,21 +48,13 @@ describe('login', ()=>{
             nome:'Eduardo Galvão'
         }
 
-        const passwords = [
-            '1',
-            '12',
-            '123',
-            '1234',
-            '12345'
-        ]
+        const passwords = data.shortpass
         const text = 'Pelo menos 6 caracteres'
        
         passwords.forEach((p) => {
             it(`não deve criar com a senha: ${p}`, () => {
-                RegisterPage.go()
-                RegisterPage.form(user.email,p,user.nome)
-                RegisterPage.submit()
-                RegisterPage.alert(text)
+                RegisterPage.submit(user.nome,user.email,p)
+                RegisterPage.alertShouldBe(text)
             })
         })
     })
@@ -97,25 +64,14 @@ describe('login', ()=>{
             password:'cDz#2020',
             nome:'Eduardo'
         }
-        const emails = [
-            'galvaocruz16&gmail.com',
-            'galvaocruz16.com.br',
-            '@gmail.com',
-            '@',
-            'galvaocruz16@',
-            '121323',
-            '@#@!#!@',
-            'xpto123'
-        ]
+        const emails = data.shortpass
 
         const text = 'Informe um email válido'
 
         emails.forEach((e) => {
             it(`não deve criar com o email: ${e}`, () => {
-                RegisterPage.go()
-                RegisterPage.form(e,user.password,user.nome)
-                RegisterPage.submit()
-                RegisterPage.alert(text)
+                RegisterPage.submit(user.nome,e,user.password)
+                RegisterPage.alertShouldBe(text)
             })
         })
 

@@ -3,20 +3,29 @@ class RegisterPage{
     constructor() {
         this.alertError = '.alert-error'
     }
-    
-    go(){
+    submit(nome=null, email = null, password = null) {
         cy.visit('/signup')
-    }
-    form(email, password,nome){
-        if(nome) cy.get('input[placeholder="Nome completo"]').type(nome)
-        if(email) cy.get('input[placeholder="Seu melhor email"]').type(email)
-        if(password) cy.get('input[type="password"]').type(password)
-       
-    }
-    submit(){
-        cy.contains('button', 'Cadastrar').click()
-    }
 
+        cy.get('input[placeholder="Nome completo"]').as('nome')
+        cy.get('input[placeholder$=email]').as('email')
+        cy.get('input[placeholder*=senha]').as('password')
+
+        if (nome) {
+            cy.get('@nome').type(nome)
+        }
+
+        if (email) {
+            cy.get('@email').type(email)
+        }
+
+        if (password) {
+            cy.get('@password').type(password)
+        }
+
+        cy.contains('button', 'Cadastrar')
+            .click()
+    }
+   
     requiredFields(nomeMessage, emailMessage, passwordMessage) {
         cy.get(this.alertError)
             .should('have.length', 3)
@@ -26,11 +35,17 @@ class RegisterPage{
                 expect($small.get(2).textContent).to.equal(passwordMessage)
             })
     }
-    message(text){
-        cy.get('.notice').should('be.visible').find('p').should('have.text',text)
+    noticeShouldBe(text) {
+        cy.get('.notice-container')
+            .should('be.visible')
+            .find('p')
+            .should('have.text', text)
     }
-    alert(text){
-        cy.get('.alert').should('be.visible').find('.alert-error').should('have.text', text)
+
+    alertShouldBe(message) {
+        cy.get(this.alertError)
+            .should('be.visible')
+            .should('have.text', message)
     }
 }
 export default new RegisterPage()
