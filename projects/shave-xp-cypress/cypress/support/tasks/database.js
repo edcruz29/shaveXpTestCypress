@@ -1,4 +1,5 @@
 const{Pool} = require('pg')
+require('dotenv').config()
 
 const dbConfig = {
   host:'motty.db.elephantsql.com',
