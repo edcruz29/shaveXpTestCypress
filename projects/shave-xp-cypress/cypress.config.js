@@ -1,6 +1,11 @@
 require('dotenv').config()
 const { defineConfig } = require("cypress");
-const {removeUser}= require('./cypress/support/tasks/database')
+// const {removeUser}= require('./cypress/support/tasks/database')
+
+const createBundler = require('@bahmutov/cypress-esbuild-preprocessor')
+
+const addCucumberPreprocessorPlugin = require('@badeball/cypress-cucumber-preprocessor').addCucumberPreprocessorPlugin;
+const createEsbuildPlugin = require('@badeball/cypress-cucumber-preprocessor/esbuild').createEsbuildPlugin;
 
 
 module.exports = defineConfig({
@@ -9,10 +14,19 @@ module.exports = defineConfig({
       // implement node event listeners here
 
       
-      on('task', {
-       removeUser
+      // on('task', {
+      //  removeUser
+      // })
+      const bundler = createBundler({
+        plugins: [createEsbuildPlugin(config)]
       })
+      on('file:preprocessor',bundler);
+      addCucumberPreprocessorPlugin(on, config)
+
+      return config
+     
     },
+    specPattern:'cypress/e2e/features/*.feature',
     env:{
       apiUrl: process.env.API_URL,
       apiHelper: process.env.API_HELPER

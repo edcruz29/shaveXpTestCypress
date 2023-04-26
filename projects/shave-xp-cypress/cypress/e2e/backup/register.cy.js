@@ -1,4 +1,4 @@
-import data from '../fixtures/register.json'
+import data from '../../fixtures/register.json'
 describe('Register', ()=>{
 
 

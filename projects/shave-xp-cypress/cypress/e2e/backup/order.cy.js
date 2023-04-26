@@ -1,4 +1,4 @@
-import  data  from "../fixtures/order.json"
+import  data  from "../../fixtures/order.json"
 
 describe('pedido', () => {
 
